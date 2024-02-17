@@ -43,7 +43,9 @@ func isSentinel(j audit.JournalEntry, cid string, w http.ResponseWriter, spiffei
 }
 
 func Delete(cid string, w http.ResponseWriter, r *http.Request, spiffeid string) {
-	if env.SafeManualKeyInput() && !state.MasterKeySet() {
+	if env.SafeManualKeyInput() &&
+		!env.SafeManualKeyOperateK8sSecrets() &&
+		!state.MasterKeySet() {
 		log.InfoLn(&cid, "Delete: Master key not set")
 		return
 	}

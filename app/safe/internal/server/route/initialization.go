@@ -94,7 +94,9 @@ func markInitializationSecretAsCompleted() error {
 // See ./app/sentinel/internal/safe/post.go:PostInitializationComplete for the
 // corresponding sentinel-side implementation.
 func InitComplete(cid string, w http.ResponseWriter, r *http.Request, spiffeid string) {
-	if env.SafeManualKeyInput() && !state.MasterKeySet() {
+	if env.SafeManualKeyInput() &&
+		!env.SafeManualKeyOperateK8sSecrets() &&
+		!state.MasterKeySet() {
 		log.InfoLn(&cid, "InitComplete: Master key not set")
 		return
 	}

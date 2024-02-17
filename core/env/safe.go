@@ -241,6 +241,22 @@ func SafeManualKeyInput() bool {
 	return false
 }
 
+// SafeManualKeyOperateK8sSecrets returns a boolean indicating whether to use
+// manual cryptographic key input for VSecM Safe when operating on k8s secrets,
+// instead of skipping k8s secret operations. If the environment variable is not
+// set or its value is not "true", the function returns false. Otherwise, the
+// function returns true.
+func SafeManualKeyOperateK8sSecrets() bool {
+	p := os.Getenv("VSECM_SAFE_MANUAL_KEY_OPERATE_K8S_SECRETS")
+	if p == "" {
+		return false
+	}
+	if strings.ToLower(p) == "true" {
+		return true
+	}
+	return false
+}
+
 // SafeDataPath returns the path to the safe data directory.
 // The path is determined by the VSECM_SAFE_DATA_PATH environment variable.
 // If the environment variable is not set, the default path "/data" is returned.
